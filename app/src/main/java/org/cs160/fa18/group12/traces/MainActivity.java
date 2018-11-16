@@ -9,7 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-public class HistoryActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {
 
     private TextView mTextMessage;
 
