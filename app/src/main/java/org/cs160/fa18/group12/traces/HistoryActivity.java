@@ -18,31 +18,38 @@ public class HistoryActivity extends AppCompatActivity {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            /* Called when a tab of the navigation bar is clicked. */
+
             switch (item.getItemId()) {
                 case R.id.navigation_history:
+                    // Hide the other panes.
                     getDashboardContainer().setVisibility(View.GONE);
                     getSettingsContainer().setVisibility(View.GONE);
-
+                    // Show the history pane.
                     getHistoryContainer().setVisibility(View.VISIBLE);
-
+                    // Absorb the event.
                     return true;
-                    
+
                 case R.id.navigation_dashboard:
+                    // Hide the other panes.
                     getHistoryContainer().setVisibility(View.GONE);
                     getSettingsContainer().setVisibility(View.GONE);
-
+                    // Show the history pane.
                     getDashboardContainer().setVisibility(View.VISIBLE);
-
+                    // Absorb the event.
                     return true;
 
                 case R.id.navigation_settings:
+                    // Hide the other panes.
                     getHistoryContainer().setVisibility(View.GONE);
                     getDashboardContainer().setVisibility(View.GONE);
-
+                    // Show the history pane.
                     getSettingsContainer().setVisibility(View.VISIBLE);
-
+                    // Absorb the event.
                     return true;
             }
+
+            // Do not absorb the event.
             return false;
         }
     };
