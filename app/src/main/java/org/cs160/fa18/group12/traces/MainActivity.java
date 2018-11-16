@@ -18,6 +18,34 @@ public class MainActivity extends AppCompatActivity {
     private SharedPreferences settingStore;
     private SharedPreferences entryStore;
 
+    /* *********
+     * onCreate.
+     * *********/
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        // Show stuff.
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_history);
+
+        // Add the onclick handler to the navigation bar.
+        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        // Initialize the data stores.
+        settingStore = getSharedPreferences("settings", MODE_PRIVATE);
+        entryStore = getSharedPreferences("entries", MODE_PRIVATE);
+
+        // Store and read back some dummy data (just to test).
+        Set<Entry> entries = new HashSet<Entry>();
+        entries.add(new Entry(100l, 0.5f, "bla", "note"));
+        entries.add(new Entry(200l, 0.8f, "bla2", "note2"));
+        setEntries(entries);
+        Log.d("bla", getEntries().toString());
+    }
+
+    /* ***************
+     * Event handlers.
+     * ***************/
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -58,28 +86,6 @@ public class MainActivity extends AppCompatActivity {
             return false;
         }
     };
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        // Show stuff.
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_history);
-
-        // Add the onclick handler to the navigation bar.
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-
-        // Initialize the data stores.
-        settingStore = getSharedPreferences("settings", MODE_PRIVATE);
-        entryStore = getSharedPreferences("entries", MODE_PRIVATE);
-
-        // Store and read back some dummy data (just to test).
-        Set<Entry> entries = new HashSet<Entry>();
-        entries.add(new Entry(100l, 0.5f, "bla", "note"));
-        entries.add(new Entry(200l, 0.8f, "bla2", "note2"));
-        setEntries(entries);
-        Log.d("bla", getEntries().toString());
-    }
 
     /* ********************************************
      * Layout/view getters, purely for convenience.
