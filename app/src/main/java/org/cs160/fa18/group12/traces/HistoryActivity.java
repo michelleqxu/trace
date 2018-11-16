@@ -56,22 +56,27 @@ public class HistoryActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Show stuff.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
 
+        // Add the onclick handler to the navigation bar.
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
 
     private ConstraintLayout getHistoryContainer() {
+        /* Gets the history_container. */
         return (ConstraintLayout) findViewById(R.id.history_container);
     }
 
     private ConstraintLayout getDashboardContainer() {
+        /* Gets the dashboard_container. */
         return (ConstraintLayout) findViewById(R.id.dashboard_container);
     }
 
     private ConstraintLayout getSettingsContainer() {
+        /* Gets the settings_container. */
         return (ConstraintLayout) findViewById(R.id.settings_container);
     }
 
