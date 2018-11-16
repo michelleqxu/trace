@@ -1,10 +1,12 @@
 package org.cs160.fa18.group12.traces;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
@@ -27,9 +29,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
 
-        // Add the onclick handler to the navigation bar.
+        // Add event handlers.
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        getAddEntryButton().setOnClickListener(new View.OnClickListener(){
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, AddEntryActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
 
         // Initialize the data stores.
         settingStore = getSharedPreferences("settings", MODE_PRIVATE);
@@ -104,6 +114,10 @@ public class MainActivity extends AppCompatActivity {
         /* Gets the settings_container.
         * */
         return (ConstraintLayout) findViewById(R.id.settings_container);
+    }
+
+    private FloatingActionButton getAddEntryButton() {
+        return (FloatingActionButton) findViewById(R.id.add_entry_button);
     }
 
     /* *******************************

@@ -21,14 +21,14 @@
             android:layout_marginRight="16dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:text="What is the answer?"
+            android:text="What is the severity?"
             android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
-            android:id="@+id/severity_breadcrumbs"
+            android:id="@+id/severity_tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
@@ -45,36 +45,36 @@
             app:layout_constraintVertical_bias="1.0">
 
             <TextView
-                android:id="@+id/severity_breadcrumbs_severity"
+                android:id="@+id/severity_severity_tab"
                 android:layout_width="20dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
-                android:text="TextView"
+                android:text="Severity"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 tools:text="Severity" />
 
             <TextView
-                android:id="@+id/severity_breadcrumbs_cause"
+                android:id="@+id/severity_cause_tab"
                 android:layout_width="20dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
-                android:text="TextView"
+                android:text="Cause"
                 android:textSize="18sp"
                 tools:text="Cause" />
 
             <TextView
-                android:id="@+id/severity_breadcrumbs_note"
+                android:id="@+id/severity_note_tab"
                 android:layout_width="20dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
-                android:text="TextView"
+                android:text="Note"
                 android:textSize="18sp"
                 tools:text="Note" />
         </LinearLayout>
@@ -95,14 +95,14 @@
             android:layout_marginRight="16dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:text="What is the answer?"
+            android:text="What is the cause?"
             android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
-            android:id="@+id/cause_breadcrumbs"
+            android:id="@+id/cause_tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
@@ -119,36 +119,36 @@
             app:layout_constraintVertical_bias="1.0">
 
             <TextView
-                android:id="@+id/cause_breadcrumbs_severity"
+                android:id="@+id/cause_severity_tab"
                 android:layout_width="20dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
-                android:text="TextView"
+                android:text="Severity"
                 android:textSize="18sp"
                 tools:text="Severity" />
 
             <TextView
-                android:id="@+id/cause_breadcrumbs_cause"
+                android:id="@+id/cause_cause_tab"
                 android:layout_width="20dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
-                android:text="TextView"
+                android:text="Cause"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 tools:text="Cause" />
 
             <TextView
-                android:id="@+id/cause_breadcrumbs_note"
+                android:id="@+id/cause_note_tab"
                 android:layout_width="20dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
-                android:text="TextView"
+                android:text="Note"
                 android:textSize="18sp"
                 tools:text="Note" />
         </LinearLayout>
@@ -170,14 +170,14 @@
             android:layout_marginRight="16dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:text="What is the answer?"
+            android:text="What is the note?"
             android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
-            android:id="@+id/note_breadcrumbs"
+            android:id="@+id/note_tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
@@ -194,35 +194,35 @@
             app:layout_constraintVertical_bias="1.0">
 
             <TextView
-                android:id="@+id/note_breadcrumbs_severity"
+                android:id="@+id/note_severity_tab"
                 android:layout_width="20dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
-                android:text="TextView"
+                android:text="Severity"
                 android:textSize="18sp"
                 tools:text="Severity" />
 
             <TextView
-                android:id="@+id/note_breadcrumbs_cause"
+                android:id="@+id/note_cause_tab"
                 android:layout_width="20dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
-                android:text="TextView"
+                android:text="Cause"
                 android:textSize="18sp"
                 tools:text="Cause" />
 
             <TextView
-                android:id="@+id/note_breadcrumbs_note"
+                android:id="@+id/note_note_tab"
                 android:layout_width="20dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
-                android:text="TextView"
+                android:text="Note"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 tools:text="Note" />
