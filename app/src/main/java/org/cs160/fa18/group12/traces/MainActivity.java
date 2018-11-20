@@ -12,13 +12,20 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class MainActivity extends AppCompatActivity {
+    // The default causes that appear in the cause list.
+    private static String[] DEFAULT_CAUSES = {"Work", "Family", "CS 160"};
 
     private SharedPreferences settingStore;
     private SharedPreferences entryStore;
+    private SharedPreferences causeStore;
 
     /* *********
      * onCreate.
@@ -44,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
         // Initialize the data stores.
         settingStore = getSharedPreferences("settings", MODE_PRIVATE);
         entryStore = getSharedPreferences("entries", MODE_PRIVATE);
+        causeStore = getSharedPreferences("causes", MODE_PRIVATE);
 
         // Store and read back some dummy data (just to test).
         Set<Entry> entries = new HashSet<Entry>();
@@ -51,6 +59,14 @@ public class MainActivity extends AppCompatActivity {
         entries.add(new Entry(200l, 0.8f, "bla2", "note2"));
         setEntries(entries);
         Log.d("bla", getEntries().toString());
+
+        // Set and get some dummy causes (just to test).
+        List<String> causes = new ArrayList<String>();
+        causes.add("cause1");
+        causes.add("cause3");
+        causes.add("cause2");
+        setCauses(causes);
+        Log.d("Causes", getCauses().toString());
     }
 
     /* ***************
@@ -155,6 +171,41 @@ public class MainActivity extends AppCompatActivity {
         // Store the serialized entries into the data store.
         SharedPreferences.Editor editor = entryStore.edit();
         editor.putStringSet("entries", serializedEntries);
+        editor.apply();
+    }
+
+    private List<String> getCauses() {
+        /* Retrieve the user's saved causes from the data store. For use in the cause pane of the
+         *      add-entry interaction flow.
+         *
+         *  Changes to the returned list will not be persisted to the data store. Use setCauses to
+         *      save a new list of causes.
+         *
+         *  Returns: The causes, as a lexicographically-sorted list of strings.
+         */
+        // Retrieve them.
+        Set<String> causes = causeStore.getStringSet("causes", null);
+        if (causes == null) {
+            causes = new HashSet<>();
+            causes.addAll(Arrays.asList(DEFAULT_CAUSES));
+        }
+
+        // Sort them.
+        List<String> sortedCauses = new ArrayList<>(causes);
+        Collections.sort(sortedCauses);
+
+        return sortedCauses;
+    }
+
+    private void setCauses(List<String> causes) {
+        /* Save the user's saved causes to the data store. For use in the cause pane of the
+         *      add-entry interaction flow.
+         *
+         * causes: The causes to save.
+         */
+        // Store the serialized entries into the data store.
+        SharedPreferences.Editor editor = causeStore.edit();
+        editor.putStringSet("causes", new HashSet<>(causes));
         editor.apply();
     }
 
