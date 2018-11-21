@@ -1,22 +1,34 @@
 package org.cs160.fa18.group12.traces;
 
+import android.app.ActionBar;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatDelegate;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 
 public class AddEntryActivity extends AppCompatActivity {
     private static SeekBar seek_bar;
     private static TextView seek_bar_stat;
     private int progress_value;
+    //private ArrayList<String> causes = new ArrayList<>();
+    ImageButton add;
     /* *********
      * onCreate.
      * *********/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         //fonts
         Typeface semibold = Typeface.createFromAsset(getAssets(), "fonts/JosefinSans-SemiBold.ttf");
         Typeface regular = Typeface.createFromAsset(getAssets(), "fonts/JosefinSans-Regular.ttf");
@@ -73,8 +85,40 @@ public class AddEntryActivity extends AppCompatActivity {
         getNoteNoteTab().setOnClickListener(noteClickListener);
         getNoteNoteTab().setTypeface(regular);
 
-        seek_bar_stat.setTypeface(regular);
+        //get causes list
+        //causes = (ArrayList<String>) getIntent().getSerializableExtra("causeList");
+
+        //add cuases button handling
+        add = (ImageButton)findViewById(R.id.imageButton);
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder popup = new AlertDialog.Builder(AddEntryActivity.this);
+                popup.setTitle("Set a new cause");
+
+                EditText userCause = new EditText(AddEntryActivity.this);
+                popup.setView(userCause);
+
+                popup.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //store the user entry
+                    }
+                });
+
+                popup.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //do nothing
+                    }
+                });
+                AlertDialog a = popup.create();
+                a.show();
+            }
+        });
+        //seek_bar_stat.setTypeface(regular);
         seek();
+
     }
 
     public void seek() {
@@ -103,6 +147,14 @@ public class AddEntryActivity extends AppCompatActivity {
                 }
         );
     }
+
+    /*public void createCause() {
+        for (int i = 0; i < causes.size(); i++) {
+            TextView text = new TextView(this);
+            text.setText(i);
+           // text.setLayoutParams(new ConstraintLayout.LayoutParams());
+        }
+    }*/
 
     /* ********************************************
      * Layout/view getters, purely for convenience.

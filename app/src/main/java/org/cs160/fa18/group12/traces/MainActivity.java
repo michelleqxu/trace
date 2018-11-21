@@ -43,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
         getAddEntryButton().setOnClickListener(new View.OnClickListener(){
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, AddEntryActivity.class);
+                //ArrayList<String> causes = (ArrayList) getCauses();
+                //intent.putExtra("causeList", causes);
                 startActivity(intent);
                 finish();
             }
