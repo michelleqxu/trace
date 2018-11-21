@@ -12,6 +12,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+//import android.widget.CalendarView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.applandeo.materialcalendarview.CalendarView;
@@ -64,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         // Feel free to edit the dummy data to whatever days you feel are necessary
         // Use this website to convert to TimeStamps and dont forget to add L after timestamp to convert to Long value:
         // https://currentmillis.com/
-        Set<Entry> entries = new HashSet<Entry>();
+        final Set<Entry> entries = new HashSet<Entry>();
         entries.add(new Entry(System.currentTimeMillis(), 0.5f, "bla", "note"));
         entries.add(new Entry(1542362400000L, 0.2f, "bla2", "note2"));
         entries.add(new Entry(1541149200000L, 0.9f, "bla2", "note2"));
@@ -81,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
         setEntries(entries);
 
         Set<Entry> entry = getEntries();
-        List<EventDay> events = new ArrayList<>();
+        final List<EventDay> events = new ArrayList<>();
 
         // Loops through each entry and adds it to the calendar
         for (Entry e : entry) {
@@ -116,17 +118,53 @@ public class MainActivity extends AppCompatActivity {
         mCalandarView.setOnDayClickListener(new OnDayClickListener() {
             @Override
             public void onDayClick(EventDay eventDay) {
-
                 // Whenever you click on a day, its numerical month and day will be displayed
                 // Just something temporary to test if clicking on certain days works
                 // Feel free to delete
+
+
                 Calendar clickedDayCalender = eventDay.getCalendar();
                 String month = String.valueOf(clickedDayCalender.get(Calendar.MONTH));
                 String day = String.valueOf(clickedDayCalender.get(Calendar.DAY_OF_MONTH));
+
                 String temp_clicked_phrase = "CLICKED DAY: " + month + ", " + day;
                 Context context = getApplicationContext();
                 Toast.makeText(context, temp_clicked_phrase, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(context, eventDay, Toast.LENGTH_SHORT).show();
+                TextView timeday = (TextView) findViewById(R.id.daytime);
+                TextView severity = (TextView) findViewById(R.id.severity);
+                TextView cause = (TextView) findViewById(R.id.cause);
+                TextView note = (TextView) findViewById(R.id.note);
 
+                for (Entry e : entries) {
+                    String[] split = e.toString().split("\\|");
+                    Long ts = Long.parseLong(split[0]);
+                    Timestamp stamp = new Timestamp(ts);
+                    Date date = new Date(stamp.getTime());
+                    Log.d("bla", " SLSKJFDSKLFJDSLFDSK " + date.toString());
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTime(date);
+                    int emonth = cal.get(Calendar.MONTH);
+                    int eday = cal.get(Calendar.DAY_OF_MONTH);
+                    if (Integer.parseInt(month) == emonth
+                            && Integer.parseInt(day) == eday) {
+                        Toast.makeText(context, date.toString(), Toast.LENGTH_SHORT);
+                        timeday.setText(String.format(month, " ", day));
+                        Float sev = Float.parseFloat(split[1]);
+                        Float caus = Float.parseFloat(split[2]);
+                        Float not = Float.parseFloat(split[3]);
+                        severity.setText(String.format(sev.toString()));
+                        cause.setText(String.format(caus.toString()));
+                        note.setText(String.format(not.toString()));
+                    }
+                }
+                // check if event exists, show if it does
+//                if (events.contains(eventDay)) {
+//                    timeday.setText(month + day);
+//                    severity.setText(eventDay.severity);
+//                    cause.setText(eventDay.cause);
+//                    note.setText(eventDay.note);
+//                }
             }
         });
 
