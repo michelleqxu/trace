@@ -148,14 +148,16 @@ public class MainActivity extends AppCompatActivity {
                     int eday = cal.get(Calendar.DAY_OF_MONTH);
                     if (Integer.parseInt(month) == emonth
                             && Integer.parseInt(day) == eday) {
-                        Toast.makeText(context, date.toString(), Toast.LENGTH_SHORT);
-                        timeday.setText(String.format(month, " ", day));
+//                        Toast.makeText(context, date.toString(), Toast.LENGTH_SHORT);
+                        Log.d("bla", "made it here");
                         Float sev = Float.parseFloat(split[1]);
-                        Float caus = Float.parseFloat(split[2]);
-                        Float not = Float.parseFloat(split[3]);
+                        String caus = split[2];
+                        String not = split[3];
+                        timeday.setText(String.format(month, " ", day));
                         severity.setText(String.format(sev.toString()));
-                        cause.setText(String.format(caus.toString()));
-                        note.setText(String.format(not.toString()));
+                        cause.setText(caus);
+                        note.setText(not);
+                        break;
                     }
                 }
                 // check if event exists, show if it does
