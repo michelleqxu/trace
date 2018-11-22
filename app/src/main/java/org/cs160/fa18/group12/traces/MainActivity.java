@@ -68,16 +68,16 @@ public class MainActivity extends AppCompatActivity {
         // https://currentmillis.com/
         final Set<Entry> entries = new HashSet<Entry>();
         entries.add(new Entry(System.currentTimeMillis(), 0.5f, "bla", "note"));
-        entries.add(new Entry(1542362400000L, 0.2f, "bla2", "note2"));
-        entries.add(new Entry(1541149200000L, 0.9f, "bla2", "note2"));
-        entries.add(new Entry(1541412000000L, 0.9f, "bla2", "note2"));
-        entries.add(new Entry(1542189600000L, 0.9f, "bla2", "note2"));
-        entries.add(new Entry(1541584800000L, 0.2f, "bla2", "note2"));
-        entries.add(new Entry(1541671200000L, 0.2f, "bla2", "note2"));
-        entries.add(new Entry(1541930400000L, 0.2f, "bla2", "note2"));
-        entries.add(new Entry(1542535200000L, 0.9f, "bla2", "note2"));
-        entries.add(new Entry(1542016800000L, 0.1f, "bla2", "note2"));
-        entries.add(new Entry(1541235600000L, 0.1f, "bla2", "note2"));
+        entries.add(new Entry(1542362400000L, 0.2f, "School", "Today I fell on the way to class and it was embarrassing :("));
+        entries.add(new Entry(1541149200000L, 0.9f, "Work", "I dropped coffee on my manager and forgot to finish an assignment"));
+        entries.add(new Entry(1541412000000L, 0.9f, "School", "I fell again on the way to class and the same person who saw it last time saw me again :("));
+        entries.add(new Entry(1542189600000L, 0.9f, "Relationships", "boys r stupid"));
+        entries.add(new Entry(1541584800000L, 0.2f, "Relationships", "note2"));
+        entries.add(new Entry(1541671200000L, 0.2f, "School", "note2"));
+        entries.add(new Entry(1541930400000L, 0.2f, "School", "note2"));
+        entries.add(new Entry(1542535200000L, 0.9f, "Relationsihps", "note2"));
+        entries.add(new Entry(1542016800000L, 0.1f, "Work", "note2"));
+        entries.add(new Entry(1541235600000L, 0.1f, "Work", "note2"));
 
 
         setEntries(entries);
@@ -126,8 +126,8 @@ public class MainActivity extends AppCompatActivity {
                 Calendar clickedDayCalender = eventDay.getCalendar();
                 String month = String.valueOf(clickedDayCalender.get(Calendar.MONTH));
                 String day = String.valueOf(clickedDayCalender.get(Calendar.DAY_OF_MONTH));
-
-                String temp_clicked_phrase = "CLICKED DAY: " + month + ", " + day;
+                String m = String.valueOf(clickedDayCalender.get(Calendar.MONTH) + 1);
+                String temp_clicked_phrase = "CLICKED DAY: " + m + ", " + day;
                 Context context = getApplicationContext();
                 Toast.makeText(context, temp_clicked_phrase, Toast.LENGTH_SHORT).show();
 //                Toast.makeText(context, eventDay, Toast.LENGTH_SHORT).show();
@@ -153,7 +153,8 @@ public class MainActivity extends AppCompatActivity {
                         Float sev = Float.parseFloat(split[1]);
                         String caus = split[2];
                         String not = split[3];
-                        timeday.setText(String.format(month, " ", day));
+                        String d = String.valueOf(emonth + 1) + "/" + String.valueOf(eday);
+                        timeday.setText(d);
                         severity.setText(String.format(sev.toString()));
                         cause.setText(caus);
                         note.setText(not);
