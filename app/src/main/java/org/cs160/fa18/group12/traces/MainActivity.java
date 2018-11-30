@@ -45,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
      * *********/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Bundle b = getIntent().getExtras();
+
         // Show stuff.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);

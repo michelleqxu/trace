@@ -3,11 +3,13 @@ package org.cs160.fa18.group12.traces;
 import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatDelegate;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,6 +25,7 @@ public class AddEntryActivity extends AppCompatActivity {
     private int progress_value;
     //private ArrayList<String> causes = new ArrayList<>();
     ImageButton add;
+    ImageButton save;
     /* *********
      * onCreate.
      * *********/
@@ -114,6 +117,15 @@ public class AddEntryActivity extends AppCompatActivity {
                 });
                 AlertDialog a = popup.create();
                 a.show();
+            }
+        });
+        save = findViewById(R.id.save_entry_button);
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AddEntryActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
             }
         });
         //seek_bar_stat.setTypeface(regular);
