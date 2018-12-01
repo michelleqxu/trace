@@ -130,10 +130,12 @@ public class AddEntryActivity extends AppCompatActivity {
                 Bundle b = getIntent().getExtras();
                 int month = b.getInt("month");
                 int day = b.getInt("day");
+                long timestamp = b.getLong("timestamp");
                 Intent intent = new Intent(AddEntryActivity.this, MainActivity.class);
                 intent.putExtra("entry", getNoteEntry().getText().toString());
                 intent.putExtra("month", month);
                 intent.putExtra("day", day);
+                intent.putExtra("timestamp", timestamp);
                 Log.d("entry", "month: " + month);
                 Log.d("entry", "day: " + day);
                 startActivity(intent);

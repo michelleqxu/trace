@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import com.applandeo.materialcalendarview.CalendarView;
 import com.applandeo.materialcalendarview.EventDay;
@@ -31,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -44,20 +46,70 @@ public class MainActivity extends AppCompatActivity {
     private SharedPreferences entryStore;
     private SharedPreferences causeStore;
     private CalendarView mCalandarView;
-    private int clickedMonth = -1;// = cal.get(Calendar.MONTH);
-    private int clickedDay = -1;// = cal.get(Calendar.DAY_OF_MONTH);
+    private int clickedMonth = cal.get(Calendar.MONTH);
+    private int clickedDay = cal.get(Calendar.DAY_OF_MONTH);
+    private long clickedTs = cal.getTimeInMillis();
 
     /* *********
      * onCreate.
      * *********/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
+        // Show stuff.
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_history);
+
+        // Initiate Calendar
+        mCalandarView = (CalendarView) findViewById(R.id.calendarView);
+
+        // Add event handlers.
+        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        getAddEntryButton().setOnClickListener(new View.OnClickListener(){
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, AddEntryActivity.class);
+
+                Log.d("bla", "month: " + clickedMonth);
+                Log.d("bla", "day: " + clickedDay);
+                intent.putExtra("month", clickedMonth);
+                intent.putExtra("day", clickedDay);
+                intent.putExtra("timestamp", clickedTs);
+                //intent.putExtra("entries", getEntries().toArray());
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        // Initialize the data stores.
+        settingStore = getSharedPreferences("settings", MODE_PRIVATE);
+        entryStore = getSharedPreferences("entries", MODE_PRIVATE);
+        causeStore = getSharedPreferences("causes", MODE_PRIVATE);
+
+        // Store and read back some dummy data (just to test).
+        // Feel free to edit the dummy data to whatever days you feel are necessary
+        // Use this website to convert to TimeStamps and dont forget to add L after timestamp to convert to Long value:
+        // https://currentmillis.com/
+
         Bundle b = getIntent().getExtras();
         String s = "";
+        final Set<Entry> entries = getEntries();
         if (b == null) {
             s = "nothing passed back";
         } else {
-            s = String.valueOf(b.getInt("month")) + "/" + String.valueOf(b.getInt("day")) + " " + b.getString("entry");
+            int entryMonth = b.getInt("month");
+            int entryDay = b.getInt("day");
+            long timestamp = b.getLong("timestamp");
+            String entry = b.getString("entry");
+            Date date = new Date();
+            date.setMonth(entryMonth);
+            date.setDate(entryDay);
+            Log.d("main", String.valueOf(new Entry(timestamp, 0.1f, "Work", entry)));
+            entries.add(new Entry(timestamp, 0.1f, "Work", entry));
+
+            s = String.valueOf(entryMonth) + "/" + String.valueOf(entryDay) + " " + entry;
         }
         AlertDialog.Builder popup = new AlertDialog.Builder(MainActivity.this);
         popup.setTitle(s);
@@ -80,53 +132,6 @@ public class MainActivity extends AppCompatActivity {
         });
         AlertDialog a = popup.create();
         a.show();
-
-        // Show stuff.
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_history);
-
-        // Initiate Calendar
-        mCalandarView = (CalendarView) findViewById(R.id.calendarView);
-
-        // Add event handlers.
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-
-        getAddEntryButton().setOnClickListener(new View.OnClickListener(){
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, AddEntryActivity.class);
-                Log.d("bla", "month: " + clickedMonth);
-                Log.d("bla", "day: " + clickedDay);
-                intent.putExtra("month", clickedMonth);
-                intent.putExtra("day", clickedDay);
-                //intent.putExtra("entries", getEntries().toArray());
-                startActivity(intent);
-                finish();
-            }
-        });
-
-        // Initialize the data stores.
-        settingStore = getSharedPreferences("settings", MODE_PRIVATE);
-        entryStore = getSharedPreferences("entries", MODE_PRIVATE);
-        causeStore = getSharedPreferences("causes", MODE_PRIVATE);
-
-        // Store and read back some dummy data (just to test).
-        // Feel free to edit the dummy data to whatever days you feel are necessary
-        // Use this website to convert to TimeStamps and dont forget to add L after timestamp to convert to Long value:
-        // https://currentmillis.com/
-        final Set<Entry> entries = new HashSet<Entry>();
-        entries.add(new Entry(System.currentTimeMillis(), 0.5f, "bla", "note"));
-        entries.add(new Entry(1542362400000L, 0.2f, "School", "Today I fell on the way to class and it was embarrassing :("));
-        entries.add(new Entry(1541149200000L, 0.9f, "Work", "I dropped coffee on my manager and forgot to finish an assignment"));
-        entries.add(new Entry(1541412000000L, 0.9f, "School", "I fell again on the way to class and the same person who saw it last time saw me again :("));
-        entries.add(new Entry(1542189600000L, 0.9f, "Relationships", "boys r stupid"));
-        entries.add(new Entry(1541584800000L, 0.2f, "Relationships", "note2"));
-        entries.add(new Entry(1541671200000L, 0.2f, "School", "note2"));
-        entries.add(new Entry(1541930400000L, 0.2f, "School", "note2"));
-        entries.add(new Entry(1542535200000L, 0.9f, "Relationsihps", "note2"));
-        entries.add(new Entry(1542016800000L, 0.1f, "Work", "note2"));
-        entries.add(new Entry(1541235600000L, 0.1f, "Work", "note2"));
-
 
         setEntries(entries);
 
@@ -185,6 +190,7 @@ public class MainActivity extends AppCompatActivity {
                 TextView note = (TextView) findViewById(R.id.note);
 
                 for (Entry e : entries) {
+                    Log.d("string of entry", e.toString());
                     String[] split = e.toString().split("\\|");
                     Long ts = Long.parseLong(split[0]);
                     Timestamp stamp = new Timestamp(ts);
@@ -194,10 +200,17 @@ public class MainActivity extends AppCompatActivity {
                     cal.setTime(date);
                     int emonth = cal.get(Calendar.MONTH);
                     int eday = cal.get(Calendar.DAY_OF_MONTH);
+
+                    Log.d("bla", "made it here");
+
                     if (clickedMonth == emonth
                             && clickedDay == eday) {
 //                        Toast.makeText(context, date.toString(), Toast.LENGTH_SHORT);
-                        Log.d("bla", "made it here");
+                        clickedTs = ts;
+                        Log.d("timestamp month:", String.valueOf(cal.get(Calendar.MONTH)));
+                        Log.d("timestamp day:", String.valueOf(cal.get(Calendar.DAY_OF_MONTH)));
+                        Log.d("last clicked month", String.valueOf(clickedMonth));
+                        Log.d("last clicked day:", String.valueOf(clickedDay));
                         Float sev = Float.parseFloat(split[1]);
                         String caus = split[2];
                         String not = split[3];
