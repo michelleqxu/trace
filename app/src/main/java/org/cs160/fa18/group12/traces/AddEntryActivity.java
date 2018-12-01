@@ -17,6 +17,8 @@ import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 
 public class AddEntryActivity extends AppCompatActivity {
@@ -31,6 +33,8 @@ public class AddEntryActivity extends AppCompatActivity {
      * *********/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         //fonts
         Typeface semibold = Typeface.createFromAsset(getAssets(), "fonts/JosefinSans-SemiBold.ttf");
@@ -123,7 +127,15 @@ public class AddEntryActivity extends AppCompatActivity {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Bundle b = getIntent().getExtras();
+                int month = b.getInt("month");
+                int day = b.getInt("day");
                 Intent intent = new Intent(AddEntryActivity.this, MainActivity.class);
+                intent.putExtra("entry", getNoteEntry().getText().toString());
+                intent.putExtra("month", month);
+                intent.putExtra("day", day);
+                Log.d("entry", "month: " + month);
+                Log.d("entry", "day: " + day);
                 startActivity(intent);
                 finish();
             }
@@ -218,4 +230,6 @@ public class AddEntryActivity extends AppCompatActivity {
     private TextView getNoteNoteTab() {
         return (TextView) findViewById(R.id.note_note_tab);
     }
+
+    private EditText getNoteEntry() { return findViewById(R.id.noteInputText); }
 }

@@ -1,6 +1,8 @@
 package org.cs160.fa18.group12.traces;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -13,6 +15,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 //import android.widget.CalendarView;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,10 +38,14 @@ public class MainActivity extends AppCompatActivity {
     // The default causes that appear in the cause list.
     private static String[] DEFAULT_CAUSES = {"Work", "Family", "CS 160"};
 
+    Calendar cal = Calendar.getInstance();
+
     private SharedPreferences settingStore;
     private SharedPreferences entryStore;
     private SharedPreferences causeStore;
     private CalendarView mCalandarView;
+    private int clickedMonth = -1;// = cal.get(Calendar.MONTH);
+    private int clickedDay = -1;// = cal.get(Calendar.DAY_OF_MONTH);
 
     /* *********
      * onCreate.
@@ -46,6 +53,33 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Bundle b = getIntent().getExtras();
+        String s = "";
+        if (b == null) {
+            s = "nothing passed back";
+        } else {
+            s = String.valueOf(b.getInt("month")) + "/" + String.valueOf(b.getInt("day")) + " " + b.getString("entry");
+        }
+        AlertDialog.Builder popup = new AlertDialog.Builder(MainActivity.this);
+        popup.setTitle(s);
+
+        EditText userCause = new EditText(MainActivity.this);
+        popup.setView(userCause);
+
+        popup.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //store the user entry
+            }
+        });
+
+        popup.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //do nothing
+            }
+        });
+        AlertDialog a = popup.create();
+        a.show();
 
         // Show stuff.
         super.onCreate(savedInstanceState);
@@ -61,8 +95,11 @@ public class MainActivity extends AppCompatActivity {
         getAddEntryButton().setOnClickListener(new View.OnClickListener(){
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, AddEntryActivity.class);
-                //ArrayList<String> causes = (ArrayList) getCauses();
-                //intent.putExtra("causeList", causes);
+                Log.d("bla", "month: " + clickedMonth);
+                Log.d("bla", "day: " + clickedDay);
+                intent.putExtra("month", clickedMonth);
+                intent.putExtra("day", clickedDay);
+                //intent.putExtra("entries", getEntries().toArray());
                 startActivity(intent);
                 finish();
             }
@@ -135,10 +172,10 @@ public class MainActivity extends AppCompatActivity {
 
 
                 Calendar clickedDayCalender = eventDay.getCalendar();
-                String month = String.valueOf(clickedDayCalender.get(Calendar.MONTH));
-                String day = String.valueOf(clickedDayCalender.get(Calendar.DAY_OF_MONTH));
-                String m = String.valueOf(clickedDayCalender.get(Calendar.MONTH) + 1);
-                String temp_clicked_phrase = "CLICKED DAY: " + m + ", " + day;
+                clickedMonth = clickedDayCalender.get(Calendar.MONTH);
+                clickedDay = clickedDayCalender.get(Calendar.DAY_OF_MONTH);
+                String m = String.valueOf(clickedMonth + 1);
+                String temp_clicked_phrase = "CLICKED DAY: " + m + ", " + clickedDay;
                 Context context = getApplicationContext();
                 Toast.makeText(context, temp_clicked_phrase, Toast.LENGTH_SHORT).show();
 //                Toast.makeText(context, eventDay, Toast.LENGTH_SHORT).show();
@@ -157,8 +194,8 @@ public class MainActivity extends AppCompatActivity {
                     cal.setTime(date);
                     int emonth = cal.get(Calendar.MONTH);
                     int eday = cal.get(Calendar.DAY_OF_MONTH);
-                    if (Integer.parseInt(month) == emonth
-                            && Integer.parseInt(day) == eday) {
+                    if (clickedMonth == emonth
+                            && clickedDay == eday) {
 //                        Toast.makeText(context, date.toString(), Toast.LENGTH_SHORT);
                         Log.d("bla", "made it here");
                         Float sev = Float.parseFloat(split[1]);
