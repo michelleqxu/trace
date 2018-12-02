@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatDelegate;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -123,6 +124,12 @@ public class AddEntryActivity extends AppCompatActivity {
                 a.show();
             }
         });
+
+
+        final EditText noteEntry = getNoteEntry();
+        noteEntry.setHint("Type your note here");
+        noteEntry.setTextColor(getResources().getColor(R.color.black));
+
         save = findViewById(R.id.save_entry_button);
         save.setOnClickListener(new View.OnClickListener() {
             @Override

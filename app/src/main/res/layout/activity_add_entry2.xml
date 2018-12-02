@@ -344,7 +344,6 @@
             android:ems="10"
             android:inputType="textMultiLine"
             android:scrollbars="vertical"
-            android:text="Type your note here"
             app:layout_constraintBottom_toBottomOf="@+id/imageView4"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
