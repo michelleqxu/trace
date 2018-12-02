@@ -179,6 +179,7 @@ public class MainActivity extends AppCompatActivity {
                 Calendar clickedDayCalender = eventDay.getCalendar();
                 clickedMonth = clickedDayCalender.get(Calendar.MONTH);
                 clickedDay = clickedDayCalender.get(Calendar.DAY_OF_MONTH);
+                clickedTs = clickedDayCalender.getTimeInMillis();
                 String m = String.valueOf(clickedMonth + 1);
                 String temp_clicked_phrase = "CLICKED DAY: " + m + ", " + clickedDay;
                 Context context = getApplicationContext();
@@ -206,7 +207,6 @@ public class MainActivity extends AppCompatActivity {
                     if (clickedMonth == emonth
                             && clickedDay == eday) {
 //                        Toast.makeText(context, date.toString(), Toast.LENGTH_SHORT);
-                        clickedTs = ts;
                         Log.d("timestamp month:", String.valueOf(cal.get(Calendar.MONTH)));
                         Log.d("timestamp day:", String.valueOf(cal.get(Calendar.DAY_OF_MONTH)));
                         Log.d("last clicked month", String.valueOf(clickedMonth));
