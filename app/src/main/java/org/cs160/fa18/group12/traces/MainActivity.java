@@ -98,6 +98,21 @@ public class MainActivity extends AppCompatActivity {
             Calendar cal = Calendar.getInstance();
             cal.setTime(date);
 
+            EventDay temp = new EventDay(cal, R.drawable.heart);
+            Calendar tempcal = temp.getCalendar();
+
+            //Month is indexed starting at 0. So November would be 10
+            int month = tempcal.get(Calendar.MONTH);
+
+            // Day and Month are indexed starting at 1 so year would be 2018 and day 21
+            int day = tempcal.get(Calendar.DAY_OF_MONTH);
+            int year = tempcal.get(Calendar.YEAR);
+
+            // or you can create a date object from the calendar object.
+
+            Date tempdate = tempcal.getTime();
+
+
             //Based on how high severity is, will categorize whether panic attack or note
             if (severity >= 0.8f) {
                 //Panic Attack is displayed as HEART icon
