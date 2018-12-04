@@ -38,8 +38,10 @@ import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
@@ -268,13 +270,31 @@ public class MainActivity extends AppCompatActivity {
         pieChart.setDragDecelerationFrictionCoef(0.5f);
         pieChart.setDrawHoleEnabled(true);
         pieChart.setTransparentCircleRadius(60f);
-        List<PieEntry> pieEntries = new ArrayList<>();
-        //These are percent values so school appears 37% of the time
-        pieEntries.add(new PieEntry(37f, "School"));
-        pieEntries.add(new PieEntry(20f, "Work"));
-        pieEntries.add(new PieEntry(10f, "Family"));
-        pieEntries.add(new PieEntry(15f, "Friends"));
-        pieEntries.add(new PieEntry(18f, "Clubs"));
+
+        final Map<String, Integer> counts = new HashMap<>();
+        int total = 0;
+        for (final Entry e : getEntries()) {
+            if (!counts.containsKey(e.cause)) {
+                counts.put(e.cause, 0);
+            }
+            counts.put(e.cause, counts.get(e.cause) + 1);
+            total += 1;
+        }
+        final List<Map.Entry<String, Integer>> countsSorted = new ArrayList<>(counts.entrySet());
+        countsSorted.sort(new Comparator<Map.Entry<String, Integer>>() {
+            @Override
+            public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
+                return (Integer.valueOf(o1.getValue())).compareTo(o2.getValue());
+            }
+        });
+        final List<PieEntry> pieEntries = new ArrayList<>();
+        for (final Map.Entry<String, Integer> e : countsSorted) {
+            final float percent = (float)e.getValue() / total * 100;
+
+            Log.d("pie chart entry","(" + e.getKey() + ", " + percent + "%)");
+
+            pieEntries.add(new PieEntry(percent, e.getKey()));
+        }
 
         PieDataSet pieDataSet = new PieDataSet(pieEntries, "Triggers");
         pieDataSet.setSliceSpace(3f);

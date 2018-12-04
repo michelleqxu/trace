@@ -5,7 +5,7 @@ public class Entry {
 
     long ts;
     float severity;
-    private String cause;
+    String cause;
     private String note;
 
     public static Entry fromString(String serialized) {
