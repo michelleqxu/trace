@@ -187,6 +187,7 @@ public class AddEntryActivity extends AppCompatActivity {
                     @Override
                     public void onStopTrackingTouch(SeekBar seekBar) {
                         seek_bar_stat.setText(seek_bar.getProgress() + "%");
+                        progress_value = seek_bar.getProgress();
                     }
                 }
         );
