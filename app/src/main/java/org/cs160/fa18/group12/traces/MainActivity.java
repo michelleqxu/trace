@@ -52,6 +52,9 @@ public class MainActivity extends AppCompatActivity {
     // The number of milliseconds in a day.
     private static long MS_PER_DAY = 1_000 * 60 * 60 * 24;
 
+    // The number of days in the past that the line chart should extend.
+    private static long LINE_CHART_MAX_AGE = 21;
+
     private SharedPreferences settingStore;
     private SharedPreferences entryStore;
     private SharedPreferences causeStore;
@@ -244,6 +247,10 @@ public class MainActivity extends AppCompatActivity {
             final Timestamp ts = new Timestamp(e.ts);
             final long relativeTimeMs = ts.getTime() - nowTs;
             final double relativeTimeDays = relativeTimeMs / MS_PER_DAY;
+
+            if (relativeTimeDays < -LINE_CHART_MAX_AGE) {
+                continue;
+            }
 
             Log.d("line chart entry","(" + relativeTimeDays + ", " + e.severity + ")");
 
