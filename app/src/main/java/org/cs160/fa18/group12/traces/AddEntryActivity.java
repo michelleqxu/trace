@@ -136,6 +136,7 @@ public class AddEntryActivity extends AppCompatActivity {
                                 currentCause = userCause.getText().toString();
                             }
                         });
+                        causes.add(currentCause);
                         causeLayout.addView(text, buttonParams);
                     }
                 });
@@ -181,6 +182,7 @@ public class AddEntryActivity extends AppCompatActivity {
                 }
                 intent.putExtra("severity", progress_value);
                 intent.putExtra("cause", currentCause);
+                intent.putStringArrayListExtra("causeList", causes);
                 Log.d("entry", "month: " + month);
                 Log.d("entry", "day: " + day);
                 startActivity(intent);
