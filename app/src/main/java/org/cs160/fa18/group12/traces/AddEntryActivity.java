@@ -179,7 +179,8 @@ public class AddEntryActivity extends AppCompatActivity {
                     intent.putExtra("day", day);
                     intent.putExtra("timestamp", timestamp);
                 }
-
+                intent.putExtra("severity", progress_value);
+                intent.putExtra("cause", currentCause);
                 Log.d("entry", "month: " + month);
                 Log.d("entry", "day: " + day);
                 startActivity(intent);

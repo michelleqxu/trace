@@ -108,11 +108,13 @@ public class MainActivity extends AppCompatActivity {
             int entryMonth = b.getInt("month");
             int entryDay = b.getInt("day");
             long timestamp = b.getLong("timestamp");
+            int severity = b.getInt("severity");
+            String cause = b.getString("cause");
             String entry = b.getString("entry");
             Date date = new Date();
             date.setMonth(entryMonth);
             date.setDate(entryDay);
-            Entry e = new Entry(timestamp, 0.1f, "Work", entry);
+            Entry e = new Entry(timestamp, severity, cause, entry);
             entries.remove(e);
             entries.add(e);
 
