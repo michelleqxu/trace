@@ -77,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("month", clickedMonth);
                 intent.putExtra("day", clickedDay);
                 intent.putExtra("timestamp", clickedTs);
+                intent.putExtra("entry", getEntry(clickedTs));
                 //intent.putExtra("entries", getEntries().toArray());
                 startActivity(intent);
                 finish();
@@ -330,6 +331,22 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return entries;
+    }
+
+    private String getEntry(long timeStamp) {
+        Set<Entry> entries = getEntries();
+        for (Entry e : entries) {
+            String[] split = e.toString().split("\\|");
+            Long ts = Long.parseLong(split[0]);
+            if (ts == timeStamp) {
+                return split[3];
+            }
+        }
+        return null;
+    }
+
+    private boolean removeEntry(long timeStamp) {
+        return false;
     }
 
     private void setEntries(Set<Entry> entries) {

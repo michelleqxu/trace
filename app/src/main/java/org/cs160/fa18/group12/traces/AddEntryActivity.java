@@ -2,6 +2,7 @@ package org.cs160.fa18.group12.traces;
 
 import android.app.ActionBar;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -17,6 +18,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
@@ -26,6 +28,7 @@ public class AddEntryActivity extends AppCompatActivity {
     private static SeekBar seek_bar;
     private static TextView seek_bar_stat;
     private int progress_value;
+    private String entry;
     //private ArrayList<String> causes = new ArrayList<>();
     ImageButton add;
     ImageButton save;
@@ -127,7 +130,15 @@ public class AddEntryActivity extends AppCompatActivity {
 
 
         final EditText noteEntry = getNoteEntry();
-        noteEntry.setHint("Type your note here");
+        Bundle b = getIntent().getExtras();
+        entry = b.getString("entry");
+
+        if (entry == null) {
+            noteEntry.setHint("Type your note here");
+        } else {
+            noteEntry.setText(entry);
+        }
+
         noteEntry.setTextColor(getResources().getColor(R.color.black));
 
         save = findViewById(R.id.save_entry_button);
