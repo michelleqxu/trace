@@ -119,33 +119,7 @@ public class MainActivity extends AppCompatActivity {
             Entry e = new Entry(timestamp, severity, cause, entry);
             entries.remove(e);
             entries.add(e);
-
-
-            s = String.valueOf(entryMonth) + "/" + String.valueOf(entryDay) + " " + entry;
         }
-        s += "num entries: " + String.valueOf(getEntries().size());
-        AlertDialog.Builder popup = new AlertDialog.Builder(MainActivity.this);
-        popup.setTitle(s);
-
-        EditText userCause = new EditText(MainActivity.this);
-        popup.setView(userCause);
-
-        popup.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                //store the user entry
-            }
-        });
-
-        popup.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                //do nothing
-            }
-        });
-        AlertDialog a = popup.create();
-        a.show();
-
         setEntries(entries);
 
         Set<Entry> entry = getEntries();
