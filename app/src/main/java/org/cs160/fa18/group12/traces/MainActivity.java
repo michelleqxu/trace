@@ -84,7 +84,9 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("day", clickedDay);
                 intent.putExtra("timestamp", clickedTs);
                 intent.putExtra("entry", getEntry(clickedTs));
-                //intent.putExtra("entries", getEntries().toArray());
+                if (getCauses() != null) {
+                    intent.putStringArrayListExtra("causeList", (ArrayList<String>) getCauses());
+                }
                 startActivity(intent);
                 finish();
             }

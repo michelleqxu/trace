@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -13,9 +14,12 @@ import android.support.v7.app.AppCompatDelegate;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,7 +33,7 @@ public class AddEntryActivity extends AppCompatActivity {
     private static TextView seek_bar_stat;
     private int progress_value;
     private String entry;
-    //private ArrayList<String> causes = new ArrayList<>();
+    private ArrayList<String> causes = new ArrayList<>();
     ImageButton add;
     ImageButton save;
     /* *********
@@ -97,7 +101,8 @@ public class AddEntryActivity extends AppCompatActivity {
         getNoteNoteTab().setTypeface(regular);
 
         //get causes list
-        //causes = (ArrayList<String>) getIntent().getSerializableExtra("causeList");
+        causes = getIntent().getStringArrayListExtra("causeList");
+
 
         //add cuases button handling
         add = (ImageButton)findViewById(R.id.imageButton);
@@ -107,13 +112,18 @@ public class AddEntryActivity extends AppCompatActivity {
                 AlertDialog.Builder popup = new AlertDialog.Builder(AddEntryActivity.this);
                 popup.setTitle("Set a new cause");
 
-                EditText userCause = new EditText(AddEntryActivity.this);
+                final EditText userCause = new EditText(AddEntryActivity.this);
                 popup.setView(userCause);
 
                 popup.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        //store the user entry
+                        LinearLayout causeLayout = findViewById(R.id.causelist);
+                        causes.add(userCause.getText().toString());
+                        Button text = new Button(AddEntryActivity.this);
+                        text.setText(userCause.getText().toString());
+                        text.setBackgroundColor(Color.parseColor("#FBF7E2"));
+                        causeLayout.addView(text);
                     }
                 });
 
@@ -162,6 +172,7 @@ public class AddEntryActivity extends AppCompatActivity {
         });
         //seek_bar_stat.setTypeface(regular);
         seek();
+        createCause();
 
     }
 
@@ -193,13 +204,21 @@ public class AddEntryActivity extends AppCompatActivity {
         );
     }
 
-    /*public void createCause() {
+    public void createCause() {
+        LinearLayout causeLayout = findViewById(R.id.causelist);
+        RelativeLayout.LayoutParams buttonParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, 100);
+        buttonParams.topMargin = 10;
         for (int i = 0; i < causes.size(); i++) {
-            TextView text = new TextView(this);
-            text.setText(i);
-           // text.setLayoutParams(new ConstraintLayout.LayoutParams());
+            Button text = new Button(this);
+            text.setText(causes.get(i));
+            text.setBackgroundColor(Color.parseColor("#FBF7E2"));
+            causeLayout.addView(text, buttonParams);
+            //text.setLayoutParams(new ConstraintLayout.LayoutParams(
+            //        ConstraintLayout.LayoutParams.WRAP_CONTENT,
+            //        ConstraintLayout.LayoutParams.WRAP_CONTENT
+            //));
         }
-    }*/
+    }
 
     /* ********************************************
      * Layout/view getters, purely for convenience.
