@@ -36,14 +36,19 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 import java.sql.Timestamp;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
     // The default causes that appear in the cause list.
     private static String[] DEFAULT_CAUSES = {"Work", "Family", "CS 160"};
+
+    // The number of milliseconds in a day.
+    private static long MS_PER_DAY = 1_000 * 60 * 60 * 24;
 
     private SharedPreferences settingStore;
     private SharedPreferences entryStore;
@@ -222,17 +227,31 @@ public class MainActivity extends AppCompatActivity {
         Log.d("Causes", getCauses().toString());
 
 
-        //Line Chart Data
-        ArrayList<com.github.mikephil.charting.data.Entry> lineValues = new ArrayList<>();
-        lineValues.add(new com.github.mikephil.charting.data.Entry(0, 60f));
-        lineValues.add(new com.github.mikephil.charting.data.Entry(1, 50f));
-        lineValues.add(new com.github.mikephil.charting.data.Entry(2, 70f));
-        lineValues.add(new com.github.mikephil.charting.data.Entry(3, 30f));
-        lineValues.add(new com.github.mikephil.charting.data.Entry(4, 50f));
-        lineValues.add(new com.github.mikephil.charting.data.Entry(5, 60f));
-        lineValues.add(new com.github.mikephil.charting.data.Entry(6, 65f));
+        // Gather line chart data.
+        ArrayList<com.github.mikephil.charting.data.Entry> lineChartEntries = new ArrayList<>();
+        final long nowTs = new Date().getTime();
+        final List<Entry> sortedEntries = new ArrayList<>(getEntries());
+        sortedEntries.sort(new Comparator<Entry>() {
+            @Override
+            public int compare(Entry o1, Entry o2) {
+                return (Long.valueOf(o1.ts)).compareTo(o2.ts);
+            }
+        });
 
-        LineDataSet lineDataSet = new LineDataSet(lineValues, "Line Data Set");
+        for (final Entry e : sortedEntries) {
+            final Timestamp ts = new Timestamp(e.ts);
+            final long relativeTimeMs = ts.getTime() - nowTs;
+            final double relativeTimeDays = relativeTimeMs / MS_PER_DAY;
+
+            Log.d("line chart entry","(" + relativeTimeDays + ", " + e.severity + ")");
+
+            final com.github.mikephil.charting.data.Entry lineChartEntry =
+                new com.github.mikephil.charting.data.Entry((float)relativeTimeDays, e.severity);
+            lineChartEntries.add(lineChartEntry);
+
+        }
+
+        LineDataSet lineDataSet = new LineDataSet(lineChartEntries, "Days Ago vs. Entry Severity Level");
         lineDataSet.setFillAlpha(110);
         lineDataSet.setColor(Color.RED);
         lineDataSet.setCircleColor(Color.BLACK);

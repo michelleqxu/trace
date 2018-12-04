@@ -3,8 +3,8 @@ package org.cs160.fa18.group12.traces;
 public class Entry {
     /* A journal entry. */
 
-    private long ts;
-    private float severity;
+    long ts;
+    float severity;
     private String cause;
     private String note;
 
