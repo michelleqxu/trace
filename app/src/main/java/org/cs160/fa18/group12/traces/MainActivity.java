@@ -111,6 +111,8 @@ public class MainActivity extends AppCompatActivity {
             int severity = b.getInt("severity");
             String cause = b.getString("cause");
             String entry = b.getString("entry");
+            ArrayList<String> causes = getIntent().getStringArrayListExtra("causeList");
+            setCauses(causes);
             Date date = new Date();
             date.setMonth(entryMonth);
             date.setDate(entryDay);
@@ -249,12 +251,12 @@ public class MainActivity extends AppCompatActivity {
         Log.d("bla", getEntries().toString());
 
         // Set and get some dummy causes (just to test).
-        List<String> causes = new ArrayList<String>();
+        /*List<String> causes = new ArrayList<String>();
         causes.add("cause1");
         causes.add("cause3");
         causes.add("cause2");
         setCauses(causes);
-        Log.d("Causes", getCauses().toString());
+        Log.d("Causes", getCauses().toString());*/
     }
 
     /* ***************
