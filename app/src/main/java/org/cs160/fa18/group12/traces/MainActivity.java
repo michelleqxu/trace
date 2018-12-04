@@ -71,9 +71,6 @@ public class MainActivity extends AppCompatActivity {
         getAddEntryButton().setOnClickListener(new View.OnClickListener(){
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, AddEntryActivity.class);
-
-                Log.d("bla", "month: " + clickedMonth);
-                Log.d("bla", "day: " + clickedDay);
                 intent.putExtra("month", clickedMonth);
                 intent.putExtra("day", clickedDay);
                 intent.putExtra("timestamp", clickedTs);
@@ -107,11 +104,14 @@ public class MainActivity extends AppCompatActivity {
             Date date = new Date();
             date.setMonth(entryMonth);
             date.setDate(entryDay);
-            Log.d("main", String.valueOf(new Entry(timestamp, 0.1f, "Work", entry)));
-            entries.add(new Entry(timestamp, 0.1f, "Work", entry));
+            Entry e = new Entry(timestamp, 0.1f, "Work", entry);
+            entries.remove(e);
+            entries.add(e);
+
 
             s = String.valueOf(entryMonth) + "/" + String.valueOf(entryDay) + " " + entry;
         }
+        s += "num entries: " + String.valueOf(getEntries().size());
         AlertDialog.Builder popup = new AlertDialog.Builder(MainActivity.this);
         popup.setTitle(s);
 
@@ -208,10 +208,7 @@ public class MainActivity extends AppCompatActivity {
                     if (clickedMonth == emonth
                             && clickedDay == eday) {
 //                        Toast.makeText(context, date.toString(), Toast.LENGTH_SHORT);
-                        Log.d("timestamp month:", String.valueOf(cal.get(Calendar.MONTH)));
-                        Log.d("timestamp day:", String.valueOf(cal.get(Calendar.DAY_OF_MONTH)));
-                        Log.d("last clicked month", String.valueOf(clickedMonth));
-                        Log.d("last clicked day:", String.valueOf(clickedDay));
+
                         Float sev = Float.parseFloat(split[1]);
                         String caus = split[2];
                         String not = split[3];
@@ -343,10 +340,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         return null;
-    }
-
-    private boolean removeEntry(long timeStamp) {
-        return false;
     }
 
     private void setEntries(Set<Entry> entries) {
