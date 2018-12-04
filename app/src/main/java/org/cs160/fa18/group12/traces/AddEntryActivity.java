@@ -36,6 +36,7 @@ public class AddEntryActivity extends AppCompatActivity {
     private ArrayList<String> causes = new ArrayList<>();
     ImageButton add;
     ImageButton save;
+    String currentCause = "";
     /* *********
      * onCreate.
      * *********/
@@ -119,11 +120,23 @@ public class AddEntryActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         LinearLayout causeLayout = findViewById(R.id.causelist);
+                        RelativeLayout.LayoutParams buttonParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, 100);
+                        buttonParams.topMargin = 10;
                         causes.add(userCause.getText().toString());
                         Button text = new Button(AddEntryActivity.this);
                         text.setText(userCause.getText().toString());
                         text.setBackgroundColor(Color.parseColor("#FBF7E2"));
-                        causeLayout.addView(text);
+                        text.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                getSeverityContainer().setVisibility(View.GONE);
+                                getCauseContainer().setVisibility(View.GONE);
+
+                                getNoteContainer().setVisibility(View.VISIBLE);
+                                currentCause = userCause.getText().toString();
+                            }
+                        });
+                        causeLayout.addView(text, buttonParams);
                     }
                 });
 
@@ -210,8 +223,19 @@ public class AddEntryActivity extends AppCompatActivity {
         buttonParams.topMargin = 10;
         for (int i = 0; i < causes.size(); i++) {
             Button text = new Button(this);
+            final String c = causes.get(i);
             text.setText(causes.get(i));
             text.setBackgroundColor(Color.parseColor("#FBF7E2"));
+            text.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    getSeverityContainer().setVisibility(View.GONE);
+                    getCauseContainer().setVisibility(View.GONE);
+
+                    getNoteContainer().setVisibility(View.VISIBLE);
+                    currentCause = c;
+                }
+            });
             causeLayout.addView(text, buttonParams);
             //text.setLayoutParams(new ConstraintLayout.LayoutParams(
             //        ConstraintLayout.LayoutParams.WRAP_CONTENT,
