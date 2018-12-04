@@ -130,7 +130,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="16dp"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -243,7 +243,7 @@
         android:id="@+id/note_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <TextView
             android:id="@+id/note_question"
@@ -253,7 +253,7 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="44dp"
             android:text="Would you like to record a note?"
             android:textSize="36sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -329,10 +329,13 @@
             android:id="@+id/imageView4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="132dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/note_question"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.26"
             app:srcCompat="@drawable/notesquare" />
 
         <EditText
@@ -349,6 +352,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/imageView4"
             app:layout_constraintVertical_bias="0.01" />
+
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/save_entry_button"
             android:layout_width="wrap_content"
@@ -356,10 +360,13 @@
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
+            android:layout_marginTop="8dp"
             android:clickable="true"
-            app:backgroundTint="@color/colorPrimary"
-            app:layout_constraintBottom_toTopOf="@+id/navigation"
+            app:backgroundTint="#ADD7FE"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.894"
             app:srcCompat="@drawable/ic_add_black_24dp" />
     </android.support.constraint.ConstraintLayout>
 

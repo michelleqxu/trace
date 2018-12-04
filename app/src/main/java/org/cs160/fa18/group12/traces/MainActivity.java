@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
@@ -49,6 +50,11 @@ public class MainActivity extends AppCompatActivity {
     private int clickedMonth = cal.get(Calendar.MONTH);
     private int clickedDay = cal.get(Calendar.DAY_OF_MONTH);
     private long clickedTs = cal.getTimeInMillis();
+
+    //fonts
+    //Typeface semibold = Typeface.createFromAsset(getAssets(), "fonts/JosefinSans-SemiBold.ttf");
+    //Typeface regular = Typeface.createFromAsset(getAssets(), "fonts/JosefinSans-Regular.ttf");
+    //Typeface light = Typeface.createFromAsset(getAssets(), "fonts/JosefinSans-Light.ttf");
 
     /* *********
      * onCreate.
@@ -190,6 +196,12 @@ public class MainActivity extends AppCompatActivity {
                 TextView severity = (TextView) findViewById(R.id.severity);
                 TextView cause = (TextView) findViewById(R.id.cause);
                 TextView note = (TextView) findViewById(R.id.note);
+
+                //set typefaces
+                //timeday.setTypeface(light);
+                //severity.setTypeface(light);
+                //cause.setTypeface(light);
+                //note.setTypeface(light);
 
                 for (Entry e : entries) {
                     Log.d("string of entry", e.toString());
