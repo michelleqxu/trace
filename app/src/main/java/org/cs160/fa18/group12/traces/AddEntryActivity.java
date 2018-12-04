@@ -120,8 +120,8 @@ public class AddEntryActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         LinearLayout causeLayout = findViewById(R.id.causelist);
-                        RelativeLayout.LayoutParams buttonParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, 100);
-                        buttonParams.topMargin = 10;
+                        RelativeLayout.LayoutParams buttonParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, 130);
+                        buttonParams.topMargin = 20;
                         causes.add(userCause.getText().toString());
                         Button text = new Button(AddEntryActivity.this);
                         text.setText(userCause.getText().toString());
@@ -219,8 +219,8 @@ public class AddEntryActivity extends AppCompatActivity {
 
     public void createCause() {
         LinearLayout causeLayout = findViewById(R.id.causelist);
-        RelativeLayout.LayoutParams buttonParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, 100);
-        buttonParams.topMargin = 10;
+        RelativeLayout.LayoutParams buttonParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, 130);
+        buttonParams.topMargin = 20;
         for (int i = 0; i < causes.size(); i++) {
             Button text = new Button(this);
             final String c = causes.get(i);
