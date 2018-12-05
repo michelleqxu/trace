@@ -41,9 +41,9 @@ public class Entry implements Comparable<Entry>{
         this.ts = ts;
         this.severity = severity;
         this.cause = cause;
-        if (note.contains("|")) {
+        /*if (note.contains("|")) {
             throw new RuntimeException("Note contains pipe characters.");
-        }
+        }*/
         this.note = note;
     }
 

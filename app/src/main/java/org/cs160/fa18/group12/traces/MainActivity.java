@@ -139,7 +139,9 @@ public class MainActivity extends AppCompatActivity {
             String cause = b.getString("cause");
             String entry = b.getString("entry");
             ArrayList<String> causes = getIntent().getStringArrayListExtra("causeList");
-            setCauses(causes);
+            if (causes != null) {
+                setCauses(causes);
+            }
             Date date = new Date();
             date.setMonth(entryMonth);
             date.setDate(entryDay);
