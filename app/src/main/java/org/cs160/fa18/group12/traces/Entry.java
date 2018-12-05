@@ -10,10 +10,10 @@ import java.util.Calendar;
 public class Entry implements Comparable<Entry>{
     /* A journal entry. */
 
-    private long ts;
-    private float severity;
-    private String cause;
-    private String note;
+    long ts;
+    float severity;
+    String cause;
+    String note;
 
     public static Entry fromString(String serialized) {
         /* Deserialize this entry from a string.

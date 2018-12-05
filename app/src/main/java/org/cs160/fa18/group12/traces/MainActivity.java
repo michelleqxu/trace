@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -27,14 +28,27 @@ import java.util.Collections;
 import com.applandeo.materialcalendarview.CalendarView;
 import com.applandeo.materialcalendarview.EventDay;
 import com.applandeo.materialcalendarview.listeners.OnDayClickListener;
+import com.github.mikephil.charting.animation.Easing;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.PercentFormatter;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class MainActivity extends AppCompatActivity {
@@ -42,6 +56,12 @@ public class MainActivity extends AppCompatActivity {
     private static String[] DEFAULT_CAUSES = {"Work", "Family", "CS 160"};
 
     Calendar cal = Calendar.getInstance();
+
+    // The number of milliseconds in a day.
+    private static long MS_PER_DAY = 1_000 * 60 * 60 * 24;
+
+    // The number of days in the past that the line chart should extend.
+    private static long LINE_CHART_MAX_AGE = 21;
 
     private SharedPreferences settingStore;
     private SharedPreferences entryStore;
@@ -69,6 +89,13 @@ public class MainActivity extends AppCompatActivity {
 
         // Initiate Calendar
         mCalandarView = (CalendarView) findViewById(R.id.calendarView);
+
+        //Initialize Line Graph
+        LineChart lineChart = (LineChart) findViewById(R.id.linechart);
+
+        //Initialize Doughnut Chart
+        PieChart pieChart = (PieChart) findViewById(R.id.piechart);
+
 
         // Add event handlers.
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
@@ -231,7 +258,99 @@ public class MainActivity extends AppCompatActivity {
         causes.add("cause2");
         setCauses(causes);
         Log.d("Causes", getCauses().toString());*/
+
+        // Gather line chart data.
+        ArrayList<com.github.mikephil.charting.data.Entry> lineChartEntries = new ArrayList<>();
+        final long nowTs = new Date().getTime();
+        final List<Entry> sortedEntries = new ArrayList<>(getEntries());
+        sortedEntries.sort(new Comparator<Entry>() {
+            @Override
+            public int compare(Entry o1, Entry o2) {
+                return (Long.valueOf(o1.ts)).compareTo(o2.ts);
+            }
+        });
+
+        for (final Entry e : sortedEntries) {
+            final Timestamp ts = new Timestamp(e.ts);
+            final long relativeTimeMs = ts.getTime() - nowTs;
+            final double relativeTimeDays = relativeTimeMs / MS_PER_DAY;
+
+            if (relativeTimeDays < -LINE_CHART_MAX_AGE) {
+                continue;
+            }
+
+            Log.d("line chart entry","(" + relativeTimeDays + ", " + e.severity + ")");
+
+            final com.github.mikephil.charting.data.Entry lineChartEntry =
+                    new com.github.mikephil.charting.data.Entry((float)relativeTimeDays, e.severity);
+            lineChartEntries.add(lineChartEntry);
+
+        }
+
+        LineDataSet lineDataSet = new LineDataSet(lineChartEntries, "Days Ago vs. Entry Severity Level");
+        lineDataSet.setFillAlpha(110);
+        lineDataSet.setColor(Color.RED);
+        lineDataSet.setCircleColor(Color.BLACK);
+        lineDataSet.setCircleHoleColor(Color.BLACK);
+
+        ArrayList<ILineDataSet> linedataSets = new ArrayList<>();
+        linedataSets.add(lineDataSet);
+
+        LineData lineData = new LineData(linedataSets);
+        lineChart.setData(lineData);
+
+
+        //Doughnut Chart Data
+        pieChart.setDragDecelerationFrictionCoef(0.5f);
+        pieChart.setDrawHoleEnabled(true);
+        pieChart.setTransparentCircleRadius(60f);
+
+        final Map<String, Integer> counts = new HashMap<>();
+        int total = 0;
+        for (final Entry e : getEntries()) {
+            if (!counts.containsKey(e.cause)) {
+                counts.put(e.cause, 0);
+            }
+            counts.put(e.cause, counts.get(e.cause) + 1);
+            total += 1;
+        }
+        final List<Map.Entry<String, Integer>> countsSorted = new ArrayList<>(counts.entrySet());
+        countsSorted.sort(new Comparator<Map.Entry<String, Integer>>() {
+            @Override
+            public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
+                return (Integer.valueOf(o1.getValue())).compareTo(o2.getValue());
+            }
+        });
+        final List<PieEntry> pieEntries = new ArrayList<>();
+        for (final Map.Entry<String, Integer> e : countsSorted) {
+            final float percent = (float)e.getValue() / total * 100;
+
+            Log.d("pie chart entry","(" + e.getKey() + ", " + percent + "%)");
+
+            pieEntries.add(new PieEntry(percent, e.getKey()));
+        }
+
+        PieDataSet pieDataSet = new PieDataSet(pieEntries, "");
+        pieDataSet.setSliceSpace(3f);
+        pieDataSet.setValueTextSize(10f);
+        pieDataSet.setColors(MATERIAL_COLORS);
+
+        PieData pieData = new PieData(pieDataSet);
+        pieData.setValueTextSize(10f);
+        pieData.setValueTextColor(Color.BLACK);
+        pieData.setValueFormatter(new PercentFormatter());
+
+        pieChart.setUsePercentValues(true);
+        pieChart.setData(pieData);
+        pieChart.animateY(2000, Easing.EasingOption.EaseInOutCubic);
+        pieChart.invalidate();
     }
+
+    public static final int[] MATERIAL_COLORS = {
+
+            Color.rgb(46, 204, 113), Color.rgb(241, 195, 15), Color.rgb(231, 76, 60),
+            Color.rgb(52, 152, 219), Color.rgb(226, 108, 240)
+    };
 
     /* ***************
      * Event handlers.
